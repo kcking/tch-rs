@@ -23,7 +23,8 @@ zip = "0.6"
 
 [features]
 download-libtorch = ["ureq"]
+python = []
 doc-only = []
 
 [package.metadata.docs.rs]
-features = [ "doc-only" ]
+features = ["doc-only"]

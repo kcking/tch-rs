@@ -1,5 +1,8 @@
 #include<torch/csrc/autograd/engine.h>
 #include<torch/csrc/jit/frontend/tracer.h>
+#if WITH_PYTHON
+#include<torch/csrc/autograd/python_variable.h>
+#endif
 #include<torch/csrc/jit/runtime/graph_executor.h>
 #include<torch/csrc/jit/passes/fixup_trace_scope_blocks.h>
 #include<torch/csrc/jit/passes/normalize_ops.h>
@@ -1637,5 +1640,22 @@ void ati_free(ivalue i) {
 void at_set_graph_executor_optimize(bool o) {
   torch::jit::setGraphExecutorOptimize(o);
 }
+
+#if WITH_PYTHON
+const at::Tensor* thp_variable_unpack(PyObject *obj) {
+    PROTECT(
+        return new torch::Tensor(THPVariable_Unpack(obj));
+    )
+    return nullptr;
+}
+
+bool thp_variable_check(PyObject* obj) {
+    return THPVariable_Check(obj);
+}
+
+PyObject* thp_variable_wrap(tensor var){
+    return THPVariable_Wrap(*var);
+}
+#endif
 
 #include "torch_api_generated.cpp.h"

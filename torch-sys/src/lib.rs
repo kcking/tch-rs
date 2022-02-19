@@ -328,6 +328,21 @@ extern "C" {
     pub fn atm_get_tensor_expr_fuser_enabled() -> bool;
 }
 
+#[cfg(feature = "python")]
+extern "C" {
+    pub fn thp_variable_unpack(
+        obj: *mut c_void,
+    ) -> *mut C_tensor;
+
+    pub fn thp_variable_check(
+        obj: *mut c_void,
+    ) -> bool;
+
+    pub fn thp_variable_wrap(
+        var: *mut C_tensor,
+    ) -> *mut c_void;
+}
+
 extern "C" {
     pub fn dummy_cuda_dependency();
 }
