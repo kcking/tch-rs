@@ -295,9 +295,10 @@ fn main() {
         let use_python = cfg!(feature = "python");
         if use_python
             && !libtorch.join("lib").join("libtorch_python.so").exists()
+            && !libtorch.join("lib").join("libtorch_python.dylib").exists()
             && !libtorch.join("lib").join("torch_python.dll").exists()
         {
-            panic!("libtorch_python.so or torch_python.dll not found");
+            panic!("libtorch_python.{{so,dylib}} or torch_python.dll not found");
         }
 
         println!("cargo:rustc-link-search=native={}", libtorch.join("lib").display());
